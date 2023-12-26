@@ -1,0 +1,10 @@
+version: '3'
+services:
+  lf:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    restart: always
+    network_mode: host
