@@ -1,0 +1,18 @@
+# BUILD
+FROM golang:1.21-alpine AS build
+
+WORKDIR /app
+
+COPY . .
+
+RUN go mod tidy
+
+WORKDIR /app/cmd/fetcher
+RUN go build -o fetcher
+
+# RUN IMAGE
+FROM alpine
+WORKDIR /app
+COPY --from=build /app/cmd/fetcher/fetcher .
+
+CMD ["./fetcher"]

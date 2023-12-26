@@ -7,12 +7,12 @@ COPY . .
 
 RUN go mod tidy
 
-WORKDIR /app/cmd/
+WORKDIR /app/cmd/tele
 RUN go build -o telebot
 
 # RUN IMAGE
 FROM alpine
 WORKDIR /app
-COPY --from=build /app/cmd/telebot .
+COPY --from=build /app/cmd/tele/telebot .
 
 CMD ["./telebot"]

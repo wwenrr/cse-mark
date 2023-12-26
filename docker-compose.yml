@@ -1,7 +1,19 @@
 version: '3'
 services:
+  tele:
+    build:
+      context: .
+      dockerfile: Dockerfile_tele
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    restart: always
+    network_mode: host
   lf:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile_fetcher
     env_file:
       - .env
     environment:

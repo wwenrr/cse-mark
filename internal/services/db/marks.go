@@ -9,10 +9,10 @@ import (
 	"sync"
 )
 
-func (db *Db) GetMark(subject string, id string) (string, error) {
+func (db *Db) GetMark(course string, id string) (string, error) {
 	filter := bson.M{"_id": id}
 	var result bson.M
-	err := db.db.Collection(subject).FindOne(context.Background(), filter).Decode(&result)
+	err := db.mark.Collection(course).FindOne(context.Background(), filter).Decode(&result)
 	if err != nil {
 		log.Error().Err(err).Msg("Get mark error")
 		return "", err
@@ -39,7 +39,7 @@ func (db *Db) StoreMarks(sub string, marks []map[string]string) error {
 
 	storeMu.Lock()
 	defer storeMu.Unlock()
-	result, err := db.db.Collection(sub).BulkWrite(context.Background(), bulkWrites, bulkWriteOptions)
+	result, err := db.mark.Collection(sub).BulkWrite(context.Background(), bulkWrites, bulkWriteOptions)
 	if err != nil {
 		log.Error().Err(err).Msg("Bulk write error")
 		return err
@@ -52,7 +52,7 @@ func (db *Db) StoreMarks(sub string, marks []map[string]string) error {
 func (db *Db) ClearMarks(sub string) error {
 	storeMu.Lock()
 	defer storeMu.Unlock()
-	err := db.db.Collection(sub).Drop(context.Background())
+	err := db.mark.Collection(sub).Drop(context.Background())
 	if err != nil {
 		log.Error().Err(err).Msg("Clear marks error")
 		return err

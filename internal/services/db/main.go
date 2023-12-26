@@ -10,8 +10,11 @@ import (
 )
 
 type Db struct {
-	client *mongo.Client
-	db     *mongo.Database
+	client          *mongo.Client
+	mark            *mongo.Database
+	settings        *mongo.Database
+	settingsUsers   *mongo.Collection
+	settingsCourses *mongo.Collection
 }
 
 // create singleton Db
@@ -49,8 +52,11 @@ func (db *Db) Load() error {
 	log.Info().Msg("Connected to MongoDB!")
 
 	db.client = client
-	db.db = client.Database(configs.MongoDb)
+	db.mark = client.Database(configs.DbMark)
 
+	db.settings = client.Database(configs.DbSettings)
+	db.settingsUsers = db.settings.Collection(configs.DbSettingsUsers)
+	db.settingsCourses = db.settings.Collection(configs.DbSettingsCourses)
 	return nil
 }
 

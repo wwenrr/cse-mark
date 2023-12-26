@@ -6,10 +6,18 @@ import (
 	"fmt"
 	"github.com/rs/zerolog/log"
 	"net/http"
+	"thuanle/cse-mark/internal/configs"
+	"thuanle/cse-mark/internal/models"
 	"thuanle/cse-mark/internal/services/db"
+	"time"
 )
 
-func fetchTiki(link string) ([][]string, error) {
+func GetAllCourses() ([]*models.CourseSettingsModel, error) {
+	updatedAfter := time.Now().Add(-configs.FetchMaxAge).Unix()
+	return db.Instance().GetAllCourses(updatedAfter)
+}
+
+func fetchCsv(link string) ([][]string, error) {
 	log.Debug().Msg("Download links...")
 
 	// Make an HTTP GET request to the specified URL
@@ -32,14 +40,14 @@ func fetchTiki(link string) ([][]string, error) {
 	return records, nil
 }
 
-func AdminStoreMarks(sub string, link string) (string, error) {
-	records, err := fetchTiki(link)
+func FetchCourseMarks(course string, link string) (string, error) {
+	records, err := fetchCsv(link)
 	if err != nil {
 		return "", err
 	}
 
 	log.Debug().
-		Str("subject", sub).
+		Str("course", course).
 		Strs("Flags", records[0]).
 		Strs("Headers", records[1]).
 		Msg("Record fetched")
@@ -51,12 +59,12 @@ func AdminStoreMarks(sub string, link string) (string, error) {
 
 	log.Debug().Interface("cleanData", cleanData).Msg("Cleaned data")
 
-	err = db.Instance().StoreMarks(sub, *cleanData)
+	err = db.Instance().StoreMarks(course, *cleanData)
 	if err != nil {
 		return "", err
 	}
 
-	return fmt.Sprintf("%s: Store %d records", sub, len(*cleanData)), nil
+	return fmt.Sprintf("%s: Store %d records", course, len(*cleanData)), nil
 }
 
 func cleanData(records [][]string) (*[]map[string]string, error) {
@@ -85,21 +93,12 @@ func cleanData(records [][]string) (*[]map[string]string, error) {
 	return &result, nil
 }
 
-func AdminClearMarks(sub string) error {
+func ClearCourseMarks(sub string) error {
 	log.Debug().
-		Str("subject", sub).
+		Str("course", sub).
 		Msg("Clear marks")
 
 	err := db.Instance().ClearMarks(sub)
 
 	return err
-}
-
-func GetMark(sub string, studentId string) (string, error) {
-	msg, err := db.Instance().GetMark(sub, studentId)
-	if err != nil {
-		log.Info().Err(err).Msg("Get mark error")
-		return "", errors.New("get mark error")
-	}
-	return msg, nil
 }

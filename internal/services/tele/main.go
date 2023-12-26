@@ -13,16 +13,20 @@ import (
 
 var commands = []telebot.Command{
 	{
+		Text:        "hello",
+		Description: "/hello - Say hello",
+	},
+	{
 		Text:        "mark",
-		Description: "/mark <subject> <student_id> - Get mark of subject",
+		Description: "/mark <course> <student_id> - Get mark of course",
 	},
 	{
 		Text:        "load",
-		Description: "/load <subject> <link> - Load marks of subject from link",
+		Description: "/load <course> <link> - Load marks of course from link",
 	},
 	{
 		Text:        "clear",
-		Description: "/clear <subject> - Clear marks of subject",
+		Description: "/clear <course> - Clear marks of course",
 	},
 }
 
@@ -42,19 +46,19 @@ func Execute() {
 		log.Fatal().Err(err).Msg("setup telebot command")
 		return
 	}
+	//b.Use(middleware.Logger())
 	b.Use(middlewares.SendErrorMiddleware)
-
-	b.Handle("/hello", func(c telebot.Context) error {
-		return c.Send("Hello!")
-	})
-
+	b.Handle("/hello", handlers.Hello)
 	b.Handle("/mark", handlers.GetMark)
+
+	teacherOnly := b.Group()
+	teacherOnly.Use(middlewares.Teacher)
+	teacherOnly.Handle("/load", handlers.TeacherLoadMarks)
+	teacherOnly.Handle("/clear", handlers.TeacherClearMarks)
 
 	adminOnly := b.Group()
 	adminOnly.Use(middleware.Whitelist(configs.AdminChatIds...))
-
-	adminOnly.Handle("/load", handlers.AdminLoadMark)
-	adminOnly.Handle("/clear", handlers.AdminClearMarks)
+	adminOnly.Handle("/teacher", handlers.AdminSetTeacher)
 
 	log.Info().Msg("Bot started")
 	b.Start()

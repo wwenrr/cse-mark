@@ -37,10 +37,6 @@ func loadEnv() {
 
 	configs.MongoHost = os.Getenv("MONGO_HOST")
 	configs.MongoPort = os.Getenv("MONGO_PORT")
-	value, ok := os.LookupEnv("MONGO_DB")
-	if ok {
-		configs.MongoDb = value
-	}
 }
 
 func Unload() {
