@@ -2,15 +2,15 @@
 
 Tính năng chính:
 
-- Tự động fetch điểm từ link nguồn (CSV) mỗi 10p
-- SV tra cứu điểm thông qua bot Telegram
+- Tự động fetch điểm từ link nguồn (CSV) mỗi 10p.
+- SV tra cứu điểm thông qua bot Telegram. Không public toàn bộ bảng điểm của SV khác.
+- Dễ dàng kiểm soát cột điểm muốn công khai và cần che giấu.
 
 ## Screenshots
 
 Tra cứu điểm:
 
-![Tra cứu điểm](https://github.com/ldt116/cse-mark/assets/2363783/4eec4f91-a0f1-48ea-ada9-35012c48c849)
-
+![Tra cứu điểm](https://github.com/ldt116/cse-mark/assets/2363783/dd380a97-db9c-4b3e-aa1a-545e2964c6a0)
 
 Nguồn điểm:
 
@@ -25,13 +25,13 @@ Nguồn điểm:
 - User chat với bot theo cú pháp `/mark <course_id> <user_id>`. Ví dụ:
 
 ```
-/mark cnpm-231 1913578
+/mark cnpmnc-231 2013307
 ```
 
 Sẽ tra cứu môn _cnpm-231_ của SV _1913578_ và trả về tuỳ theo quy định muốn tiết lộ của GV. Ví dụ
 
 ```
-{"_id":"1913578","HT":"VŨ QUANG HUY","Present":"0"}
+{"_id":"2013307","HT":"NGUYỄN ĐỨC HUY","Kiểm tra - 20%":"7.25","Thi - 60%":"","Thí nghiệm - 20%":"7.8"}
 ```
 
 ### User và permission
