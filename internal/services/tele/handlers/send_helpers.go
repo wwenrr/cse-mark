@@ -17,5 +17,5 @@ func sendf(c telebot.Context, format string, v ...interface{}) error {
 }
 
 func sendPre(c telebot.Context, message string, opts ...interface{}) error {
-	return c.Send("<pre>"+message+"</pre>", append(opts, telebot.ModeHTML, telebot.NoPreview)...)
+	return send(c, "<pre>"+message+"</pre>", opts)
 }

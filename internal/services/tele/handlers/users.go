@@ -10,7 +10,7 @@ func Hello(c telebot.Context) error {
 	chatId := c.Chat().ID
 	chatUsername := c.Chat().Username
 
-	return sendf(c, "Hello %s (%d)", chatUsername, chatId)
+	return sendf(c, "Hello @%s (%d)", chatUsername, chatId)
 }
 
 func AdminSetTeacher(c telebot.Context) error {

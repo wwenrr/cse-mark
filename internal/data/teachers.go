@@ -3,18 +3,16 @@ package data
 import (
 	"thuanle/cse-mark/internal/models"
 	"thuanle/cse-mark/internal/services/db"
-	"time"
 )
 
 func TeacherStoreCourseLink(course string, link string, byId int64, byUser string) error {
 	model := &models.CourseSettingsModel{
-		Course:    course,
-		Link:      link,
-		ById:      byId,
-		ByUser:    byUser,
-		UpdatedAt: time.Now().Unix(),
+		Course: course,
+		Link:   link,
+		ById:   byId,
+		ByUser: byUser,
 	}
-	return db.Instance().UpdateSubLinkSettings(model)
+	return db.Instance().SetCourseSettings(model)
 }
 
 func IsTeacher(user string) bool {

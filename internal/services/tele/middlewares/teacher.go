@@ -1,9 +1,9 @@
 package middlewares
 
 import (
-	"errors"
 	"gopkg.in/telebot.v3"
 	"thuanle/cse-mark/internal/data"
+	"thuanle/cse-mark/internal/services/tele/models"
 )
 
 func Teacher(next telebot.HandlerFunc) telebot.HandlerFunc {
@@ -16,6 +16,7 @@ func Teacher(next telebot.HandlerFunc) telebot.HandlerFunc {
 		if data.IsTeacher(chatUsername) {
 			return next(c)
 		}
-		return errors.New("you are not a teacher")
+
+		return models.NewUnauthorizedError("you are not a teacher")
 	}
 }

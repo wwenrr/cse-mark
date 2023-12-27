@@ -27,7 +27,7 @@ var (
 	storeMu sync.Mutex
 )
 
-func (db *Db) StoreMarks(sub string, marks []map[string]string) error {
+func (db *Db) StoreMarks(course string, marks []map[string]string) error {
 	var bulkWrites []mongo.WriteModel
 	for _, mark := range marks {
 		filter := bson.M{"_id": mark["_id"]}
@@ -39,7 +39,7 @@ func (db *Db) StoreMarks(sub string, marks []map[string]string) error {
 
 	storeMu.Lock()
 	defer storeMu.Unlock()
-	result, err := db.mark.Collection(sub).BulkWrite(context.Background(), bulkWrites, bulkWriteOptions)
+	result, err := db.mark.Collection(course).BulkWrite(context.Background(), bulkWrites, bulkWriteOptions)
 	if err != nil {
 		log.Error().Err(err).Msg("Bulk write error")
 		return err
@@ -49,10 +49,10 @@ func (db *Db) StoreMarks(sub string, marks []map[string]string) error {
 	return nil
 }
 
-func (db *Db) ClearMarks(sub string) error {
+func (db *Db) ClearMarks(course string) error {
 	storeMu.Lock()
 	defer storeMu.Unlock()
-	err := db.mark.Collection(sub).Drop(context.Background())
+	err := db.mark.Collection(course).Drop(context.Background())
 	if err != nil {
 		log.Error().Err(err).Msg("Clear marks error")
 		return err

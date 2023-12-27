@@ -45,11 +45,11 @@ Lưu ý:
 
 **Lưu ý quan trọng**: 
 - Việc sử dụng Telegram Username thuận tiện và dễ tra cứu hơn Telegram Chat Id. Tuy nhiên, Telegram cho phép người dùng __tự đổi username__. Bạn cần tự quản lý rủi ro này nếu một trong những super user "rơi" vào tay người khác.
-- Hiện tại không phân quyền cập nhật bảng điểm cho từng giảng viên. Các giảng viên có thể thay đổi bảng điểm của GV khác (do nhầm lẫn?!)
 
 ### Nguồn điểm
 
 - Chỉ user quyền _Teacher_ mới được quyền set nguồn điểm
+- Chỉ author của course/admin mới có thể update link của course/xoá course 
 - Thiết lập nguồn điểm bằng câu lệnh `/load course_id link`. Ví dụ
 
 ```
@@ -60,7 +60,7 @@ Sẽ thiết lập bảng điểm link [https://docs.google.com/spreadsheets/d/e
 
 Lưu ý:
 
-- Hiện tại, chỉ chấp nhận file CSV.
+- Hiện tại, chỉ chấp nhận file CSV
 
 Để có thể publish từ Google Spreadsheet, Bạn có thể sử dụng tính năng _File_ -> _Share_ -> _Publish to web_. Trong menu _Web page_, chọn _.csv_; Chọn Publish Sheet tương ứng.
 

@@ -13,10 +13,6 @@ import (
 
 var commands = []telebot.Command{
 	{
-		Text:        "hello",
-		Description: "/hello - Say hello",
-	},
-	{
 		Text:        "mark",
 		Description: "/mark <course> <student_id> - Get mark of course",
 	},
@@ -48,13 +44,13 @@ func Execute() {
 	}
 	//b.Use(middleware.Logger())
 	b.Use(middlewares.SendErrorMiddleware)
-	b.Handle("/hello", handlers.Hello)
+	b.Handle("/start", handlers.Hello)
 	b.Handle("/mark", handlers.GetMark)
 
 	teacherOnly := b.Group()
 	teacherOnly.Use(middlewares.Teacher)
-	teacherOnly.Handle("/load", handlers.TeacherLoadMarks)
-	teacherOnly.Handle("/clear", handlers.TeacherClearMarks)
+	teacherOnly.Handle("/load", handlers.TeacherLoadCourseLink)
+	teacherOnly.Handle("/clear", handlers.TeacherClearCourseLink)
 
 	adminOnly := b.Group()
 	adminOnly.Use(middleware.Whitelist(configs.AdminChatIds...))
