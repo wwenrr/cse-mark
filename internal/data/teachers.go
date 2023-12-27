@@ -12,7 +12,7 @@ func TeacherStoreCourseLink(course string, link string, byId int64, byUser strin
 		ById:   byId,
 		ByUser: byUser,
 	}
-	return db.Instance().SetCourseSettings(model)
+	return db.Instance().SetCourse(model)
 }
 
 func IsTeacher(user string) bool {
@@ -21,4 +21,8 @@ func IsTeacher(user string) bool {
 		return false
 	}
 	return u.IsTeacher
+}
+
+func FetchTeacherCourses(user string) ([]*models.CourseSettingsModel, error) {
+	return db.Instance().GetCoursesByUser(user)
 }

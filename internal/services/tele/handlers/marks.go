@@ -32,5 +32,7 @@ func GetMark(c telebot.Context) error {
 		return err
 	}
 
+	err = data.AppendQueryHistory(c.Chat().ID, course, studentId)
+
 	return sendPre(c, msg)
 }

@@ -64,6 +64,8 @@ func FetchCourseMarks(course string, link string) (string, error) {
 		return "", err
 	}
 
+	err = db.Instance().UpdateCourseCount(course, len(*cleanData))
+
 	return fmt.Sprintf("%s: Store %d records", course, len(*cleanData)), nil
 }
 
@@ -101,4 +103,8 @@ func ClearCourseMarks(sub string) error {
 	err := db.Instance().ClearMarks(sub)
 
 	return err
+}
+
+func IsUpdatedCourse(course *models.CourseSettingsModel) bool {
+	return course.UpdatedAt > time.Now().Add(-configs.FetchMaxAge).Unix()
 }

@@ -17,7 +17,7 @@ func AuthorizeModifyCourse(user string, chatId int64, course string) bool {
 		return true
 	}
 
-	courseSettings, err := db.Instance().GetCourseSettingsById(course)
+	courseSettings, err := db.Instance().GetCourseById(course)
 	log.Debug().
 		Str("course", course).
 		Str("user", user).

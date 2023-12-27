@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"gopkg.in/telebot.v3"
+	"strings"
 	"thuanle/cse-mark/internal/data"
+	"thuanle/cse-mark/internal/services/tele/views"
 	"thuanle/cse-mark/internal/validation"
 )
 
@@ -35,4 +37,57 @@ func AdminSetTeacher(c telebot.Context) error {
 	} else {
 		return sendf(c, "Remove %s from teacher", name)
 	}
+}
+
+func GetMyProfile(c telebot.Context) error {
+	chatUsername := c.Chat().Username
+	if data.IsTeacher(chatUsername) {
+		return GetTeacherProfile(c)
+	} else {
+		return GetStudentProfile(c)
+	}
+}
+
+func GetStudentProfile(c telebot.Context) error {
+	chatId := c.Chat().ID
+
+	marks, err := data.FetchMarksByChatId(chatId)
+	if err != nil {
+		return err
+	}
+
+	msg := "[" + strings.Join(marks, ",\n") + "]"
+	return sendPre(c, msg)
+}
+
+func GetTeacherProfile(c telebot.Context) error {
+	chatUsername := c.Chat().Username
+	courses, err := data.FetchTeacherCourses(chatUsername)
+	if err != nil {
+		return err
+	}
+
+	msg := views.RenderTeacherProfile(courses)
+	return sendPre(c, msg)
+}
+
+func Clear(c telebot.Context) error {
+	chatUsername := c.Chat().Username
+
+	if data.IsTeacher(chatUsername) {
+		return TeacherClearCourseLink(c)
+	} else {
+		return StudentClearQueries(c)
+	}
+}
+
+func StudentClearQueries(c telebot.Context) error {
+	chatId := c.Chat().ID
+
+	err := data.ClearStudentQueries(chatId)
+	if err != nil {
+		return err
+	}
+
+	return sendf(c, "Clear queries success")
 }

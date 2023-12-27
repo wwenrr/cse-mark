@@ -6,7 +6,7 @@ import (
 )
 
 func send(c telebot.Context, message string, opts ...interface{}) error {
-	if opts == nil {
+	if len(opts) == 0 || opts[0] == nil {
 		return c.Send(message, telebot.ModeHTML, telebot.NoPreview)
 	}
 	return c.Send(message, append(opts, telebot.ModeHTML, telebot.NoPreview)...)
@@ -17,5 +17,5 @@ func sendf(c telebot.Context, format string, v ...interface{}) error {
 }
 
 func sendPre(c telebot.Context, message string, opts ...interface{}) error {
-	return send(c, "<pre>"+message+"</pre>", opts)
+	return send(c, "<pre>"+message+"</pre>", opts...)
 }

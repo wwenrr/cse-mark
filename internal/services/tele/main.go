@@ -18,11 +18,15 @@ var commands = []telebot.Command{
 	},
 	{
 		Text:        "load",
-		Description: "/load <course> <link> - Load marks of course from link",
+		Description: "/load <course> <link> - For teacher, load course marks from link",
 	},
 	{
 		Text:        "clear",
-		Description: "/clear <course> - Clear marks of course",
+		Description: "/clear - Clear query history. For teacher, clear course link",
+	},
+	{
+		Text:        "my",
+		Description: "/my - Your profile",
 	},
 }
 
@@ -46,11 +50,12 @@ func Execute() {
 	b.Use(middlewares.SendErrorMiddleware)
 	b.Handle("/start", handlers.Hello)
 	b.Handle("/mark", handlers.GetMark)
+	b.Handle("/my", handlers.GetMyProfile)
+	b.Handle("/clear", handlers.Clear)
 
 	teacherOnly := b.Group()
 	teacherOnly.Use(middlewares.Teacher)
 	teacherOnly.Handle("/load", handlers.TeacherLoadCourseLink)
-	teacherOnly.Handle("/clear", handlers.TeacherClearCourseLink)
 
 	adminOnly := b.Group()
 	adminOnly.Use(middleware.Whitelist(configs.AdminChatIds...))
