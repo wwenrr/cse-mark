@@ -59,6 +59,11 @@ func FetchCourseMarks(course string, link string) (string, error) {
 
 	log.Debug().Interface("cleanData", cleanData).Msg("Cleaned data")
 
+	err = db.Instance().ClearCourse(course)
+	if err != nil {
+		return "", err
+	}
+
 	err = db.Instance().StoreMarks(course, *cleanData)
 	if err != nil {
 		return "", err
@@ -100,7 +105,7 @@ func ClearCourseMarks(sub string) error {
 		Str("course", sub).
 		Msg("Clear marks")
 
-	err := db.Instance().ClearMarks(sub)
+	err := db.Instance().ClearCourse(sub)
 
 	return err
 }
