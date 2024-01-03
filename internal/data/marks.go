@@ -2,6 +2,7 @@ package data
 
 import (
 	"errors"
+	"fmt"
 	"github.com/rs/zerolog/log"
 	"thuanle/cse-mark/internal/services/db"
 )
@@ -9,8 +10,12 @@ import (
 func GetMark(course string, studentId string) (string, error) {
 	msg, err := db.Instance().GetMark(course, studentId)
 	if err != nil {
-		log.Info().Err(err).Msg("Get mark error")
-		return "", errors.New("get mark error")
+		log.Error().
+			Str("course", course).
+			Str("studentId", studentId).
+			Err(err).
+			Msg("Get mark error")
+		return "", errors.New(fmt.Sprintf("get mark error for student: %s on course: %s", studentId, course))
 	}
 	return msg, nil
 }
@@ -39,7 +44,10 @@ func FetchMarksByChatId(chatId int64) ([]string, error) {
 	for _, course := range student.QueryCourses {
 		mark, err := GetMark(course, student.QueryId)
 		if err != nil {
-			log.Error().Err(err).Msg("Get mark error")
+			log.Error().
+				Str("course", course).
+				Str("studentId", student.QueryId).
+				Err(err).Msg("Get mark error")
 			continue
 		}
 		marks = append(marks, mark)

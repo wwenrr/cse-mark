@@ -11,7 +11,10 @@ func (db *Db) GetMark(course string, id string) (string, error) {
 	var result bson.M
 	err := db.mark.Collection(course).FindOne(context.Background(), filter).Decode(&result)
 	if err != nil {
-		log.Error().Err(err).Msg("Get mark error")
+		log.Error().
+			Str("course", course).
+			Err(err).
+			Msg("Get marks error")
 		return "", err
 	}
 
