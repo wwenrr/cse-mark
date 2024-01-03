@@ -10,9 +10,8 @@ type CourseSettingsModel struct {
 }
 
 type UserSettingsModel struct {
-	UserId       string   `json:"user_id" bson:"user_id"`
-	IsTeacher    bool     `json:"is_teacher" bson:"is_teacher"`
-	GrantedBy    string   `json:"granted_by" bson:"granted_by"`
-	QueryId      string   `json:"query_id,omitempty" bson:"query_id,omitempty"`
-	QueryCourses []string `json:"query_courses,omitempty" bson:"query_courses,omitempty"`
+	UserId    string            `json:"user_id" bson:"user_id"`
+	IsTeacher bool              `json:"is_teacher" bson:"is_teacher"`
+	GrantedBy string            `json:"granted_by" bson:"granted_by"`
+	Queries   map[string]string `json:"queries,omitempty" bson:"queries,omitempty"`
 }

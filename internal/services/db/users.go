@@ -42,13 +42,7 @@ func (db *Db) GetUserById(user string) (*models.UserSettingsModel, error) {
 func (db *Db) AppendUserHistory(chatId int64, course string, studentId string) error {
 	update := bson.M{
 		"$set": bson.M{
-			"query_id": studentId,
-		},
-		"$addToSet": bson.M{
-			"query_courses": course,
-		},
-		"$setOnInsert": bson.M{
-			"_id": chatId,
+			"queries." + course: studentId,
 		},
 	}
 	_, err := db.settingsUsers.UpdateByID(context.Background(), chatId, update, options.Update().SetUpsert(true))
@@ -61,8 +55,7 @@ func (db *Db) AppendUserHistory(chatId int64, course string, studentId string) e
 func (db *Db) ClearUserHistory(chatId int64) error {
 	update := bson.M{
 		"$unset": bson.M{
-			"query_id":      "",
-			"query_courses": []string{},
+			"queries": "",
 		},
 	}
 	_, err := db.settingsUsers.UpdateByID(context.Background(), chatId, update, options.Update().SetUpsert(true))

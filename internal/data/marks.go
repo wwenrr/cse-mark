@@ -20,7 +20,7 @@ func GetMark(course string, studentId string) (string, error) {
 	return msg, nil
 }
 
-func FetchMarksByChatId(chatId int64) ([]string, error) {
+func FetchMarksByChatId(chatId int64) (map[string]string, error) {
 	student, err := db.Instance().GetUserByIntId(chatId)
 	if err != nil {
 		log.Error().
@@ -33,24 +33,20 @@ func FetchMarksByChatId(chatId int64) ([]string, error) {
 	if student == nil {
 		return nil, errors.New("user not found")
 	}
-	if student.QueryId == "" {
-		return nil, errors.New("studentId not found")
+	if len(student.Queries) == 0 {
+		return nil, errors.New("history not found")
 	}
-	if len(student.QueryCourses) == 0 {
-		return nil, errors.New("course not found")
-	}
-
-	var marks []string
-	for _, course := range student.QueryCourses {
-		mark, err := GetMark(course, student.QueryId)
+	marks := map[string]string{}
+	for course, studentId := range student.Queries {
+		mark, err := GetMark(course, studentId)
 		if err != nil {
 			log.Error().
 				Str("course", course).
-				Str("studentId", student.QueryId).
+				Str("studentId", studentId).
 				Err(err).Msg("Get mark error")
 			continue
 		}
-		marks = append(marks, mark)
+		marks[course] = mark
 	}
 	return marks, nil
 }

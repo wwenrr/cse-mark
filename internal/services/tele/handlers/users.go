@@ -3,7 +3,6 @@ package handlers
 import (
 	"github.com/rs/zerolog/log"
 	"gopkg.in/telebot.v3"
-	"strings"
 	"thuanle/cse-mark/internal/data"
 	"thuanle/cse-mark/internal/services/tele/views"
 	"thuanle/cse-mark/internal/validation"
@@ -61,8 +60,11 @@ func GetStudentProfile(c telebot.Context) error {
 		return err
 	}
 
-	msg := "[" + strings.Join(marks, ",\n") + "]"
-	return sendPre(c, msg)
+	for course, mark := range marks {
+		send(c, course+":\n<pre>\n"+mark+"\n</pre>")
+	}
+
+	return nil
 }
 
 func GetTeacherProfile(c telebot.Context) error {
