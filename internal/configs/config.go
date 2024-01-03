@@ -15,5 +15,5 @@ var (
 	DbSettingsUsers   = "users"
 	DbSettingsCourses = "courses"
 
-	FetchMaxAge = 6 * 30 * 24 * time.Hour // 6 months
+	FetchMaxAge = 9 * 30 * 24 * time.Hour // 6 months
 )

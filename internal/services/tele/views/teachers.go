@@ -12,14 +12,9 @@ func RenderTeacherProfile(courses []*models.CourseSettingsModel) string {
 	t.Style().Options.DrawBorder = false
 	t.Style().Options.SeparateColumns = false
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Course", "Cnt", "Live"})
+	t.AppendHeader(table.Row{"Course", "Cnt", "Till"})
 	for _, c := range courses {
-		liveStr := "✓"
-		if !data.IsUpdatedCourse(c) {
-			liveStr = "✗"
-		}
-
-		t.AppendRow(table.Row{c.Course, c.RecordCnt, liveStr})
+		t.AppendRow(table.Row{c.Course, c.RecordCnt, data.CourseUpdateTill(c).Format("0106")})
 	}
 
 	return t.Render()

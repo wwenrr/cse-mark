@@ -110,6 +110,6 @@ func ClearCourseMarks(sub string) error {
 	return err
 }
 
-func IsUpdatedCourse(course *models.CourseSettingsModel) bool {
-	return course.UpdatedAt > time.Now().Add(-configs.FetchMaxAge).Unix()
+func CourseUpdateTill(course *models.CourseSettingsModel) time.Time {
+	return time.Unix(course.UpdatedAt, 0).Add(configs.FetchMaxAge)
 }
