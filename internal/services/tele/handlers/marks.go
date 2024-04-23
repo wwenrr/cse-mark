@@ -24,6 +24,7 @@ func GetMark(c telebot.Context) error {
 
 	log.Info().
 		Int64("chatId", c.Chat().ID).
+		Str("chatName", c.Chat().Username).
 		Str("course", course).
 		Str("studentId", studentId).
 		Msg("Get mark")

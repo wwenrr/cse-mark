@@ -3,6 +3,7 @@ package fetcher
 import (
 	"github.com/rs/zerolog/log"
 	"thuanle/cse-mark/internal/data"
+	"time"
 )
 
 func fetchNewMarks() {
@@ -25,5 +26,6 @@ func fetchNewMarks() {
 			Str("link", course.Link).
 			Str("msg", msg).
 			Msg("Fetched new marks")
+		time.Sleep(time.Minute)
 	}
 }
