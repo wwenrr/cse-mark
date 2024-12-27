@@ -18,6 +18,14 @@ func AuthorizeModifyCourse(user string, chatId int64, course string) bool {
 	}
 
 	courseSettings, err := db.Instance().GetCourseById(course)
+	if err != nil || courseSettings == nil {
+		log.Debug().
+			Any("course", courseSettings).
+			Err(err).
+			Msg("Get course settings error or new course")
+		return true
+	}
+
 	log.Debug().
 		Str("course", course).
 		Str("user", user).
@@ -26,11 +34,6 @@ func AuthorizeModifyCourse(user string, chatId int64, course string) bool {
 		Int64("byId", courseSettings.ById).
 		Err(err).
 		Msg("Authorize modify course")
-
-	if err != nil {
-		log.Error().Err(err).Msg("Get course settings error")
-		return true
-	}
 
 	return courseSettings.ByUser == user || courseSettings.ById == chatId
 }
