@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/rs/zerolog/log"
 	"gopkg.in/telebot.v3"
+	"strings"
 	"thuanle/cse-mark/internal/data"
 	"thuanle/cse-mark/internal/services/tele/models"
 	"thuanle/cse-mark/internal/validation"
@@ -11,7 +12,13 @@ import (
 func GetMark(c telebot.Context) error {
 	course, studentId, err := args2StrStr(c)
 	if err != nil {
-		return err
+		//split c.Text() via " " and get course and studentId
+		args := strings.Split(c.Text(), " ")
+		if len(args) != 2 {
+			return err
+		}
+		course = args[0]
+		studentId = args[1]
 	}
 
 	if !validation.ValidateCourseId(course) {

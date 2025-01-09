@@ -61,6 +61,7 @@ func Execute() {
 	adminOnly.Use(middleware.Whitelist(configs.AdminChatIds...))
 	adminOnly.Handle("/teacher", handlers.AdminSetTeacher)
 
+	b.Handle(telebot.OnText, handlers.GetMark)
 	log.Info().Msg("Bot started")
 	b.Start()
 }
