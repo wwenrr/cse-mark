@@ -4,8 +4,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"gopkg.in/telebot.v3"
 	"thuanle/cse-mark/internal/data"
+	"thuanle/cse-mark/internal/domain/validation"
 	"thuanle/cse-mark/internal/services/tele/views"
-	"thuanle/cse-mark/internal/validation"
 )
 
 func Hello(c telebot.Context) error {

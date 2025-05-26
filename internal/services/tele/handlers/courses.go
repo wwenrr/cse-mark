@@ -5,8 +5,8 @@ import (
 	"gopkg.in/telebot.v3"
 	"net/url"
 	"thuanle/cse-mark/internal/data"
+	"thuanle/cse-mark/internal/domain/validation"
 	"thuanle/cse-mark/internal/services/tele/models"
-	"thuanle/cse-mark/internal/validation"
 )
 
 func TeacherLoadCourseLink(c telebot.Context) error {
