@@ -1,4 +1,4 @@
-package models
+package entities
 
 type CourseSettingsModel struct {
 	Course    string `json:"course" bson:"course"`

@@ -4,10 +4,10 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	"os"
 	"thuanle/cse-mark/internal/data"
-	"thuanle/cse-mark/internal/models"
+	"thuanle/cse-mark/internal/domain/entities"
 )
 
-func RenderTeacherProfile(courses []*models.CourseSettingsModel) string {
+func RenderTeacherProfile(courses []*entities.CourseSettingsModel) string {
 	t := table.NewWriter()
 	t.Style().Options.DrawBorder = false
 	t.Style().Options.SeparateColumns = false

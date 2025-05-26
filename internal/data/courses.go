@@ -7,12 +7,12 @@ import (
 	"github.com/rs/zerolog/log"
 	"net/http"
 	"thuanle/cse-mark/internal/configs"
-	"thuanle/cse-mark/internal/models"
+	"thuanle/cse-mark/internal/domain/entities"
 	"thuanle/cse-mark/internal/services/db"
 	"time"
 )
 
-func GetAllCourses() ([]*models.CourseSettingsModel, error) {
+func GetAllCourses() ([]*entities.CourseSettingsModel, error) {
 	updatedAfter := time.Now().Add(-configs.FetchMaxAge).Unix()
 	return db.Instance().GetAllCourses(updatedAfter)
 }
@@ -110,6 +110,6 @@ func ClearCourseMarks(sub string) error {
 	return err
 }
 
-func CourseUpdateTill(course *models.CourseSettingsModel) time.Time {
+func CourseUpdateTill(course *entities.CourseSettingsModel) time.Time {
 	return time.Unix(course.UpdatedAt, 0).Add(configs.FetchMaxAge)
 }

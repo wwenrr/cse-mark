@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"sync"
-	"thuanle/cse-mark/internal/models"
+	"thuanle/cse-mark/internal/domain/entities"
 	"time"
 )
 
@@ -48,7 +48,7 @@ func (db *Db) ClearCourse(course string) error {
 	return nil
 }
 
-func (db *Db) GetAllCourses(updatedAfter int64) ([]*models.CourseSettingsModel, error) {
+func (db *Db) GetAllCourses(updatedAfter int64) ([]*entities.CourseSettingsModel, error) {
 	filter := bson.M{
 		"$and": []bson.M{
 			{"updated_at": bson.M{"$gt": updatedAfter}},
@@ -61,7 +61,7 @@ func (db *Db) GetAllCourses(updatedAfter int64) ([]*models.CourseSettingsModel, 
 		return nil, err
 	}
 
-	var courses []*models.CourseSettingsModel
+	var courses []*entities.CourseSettingsModel
 	err = cur.All(context.Background(), &courses)
 	if err != nil {
 		return nil, err
@@ -70,8 +70,8 @@ func (db *Db) GetAllCourses(updatedAfter int64) ([]*models.CourseSettingsModel, 
 	return courses, err
 }
 
-func (db *Db) GetCourseById(course string) (*models.CourseSettingsModel, error) {
-	var res models.CourseSettingsModel
+func (db *Db) GetCourseById(course string) (*entities.CourseSettingsModel, error) {
+	var res entities.CourseSettingsModel
 	err := db.settingsCourses.FindOne(context.Background(), bson.M{"_id": course}).Decode(&res)
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (db *Db) GetCourseById(course string) (*models.CourseSettingsModel, error) 
 	return &res, nil
 }
 
-func (db *Db) SetCourse(course *models.CourseSettingsModel) error {
+func (db *Db) SetCourse(course *entities.CourseSettingsModel) error {
 	update := bson.M{
 		"$set": bson.M{
 			"link":       course.Link,
@@ -99,14 +99,14 @@ func (db *Db) SetCourse(course *models.CourseSettingsModel) error {
 	return nil
 }
 
-func (db *Db) GetCoursesByUser(user string) ([]*models.CourseSettingsModel, error) {
+func (db *Db) GetCoursesByUser(user string) ([]*entities.CourseSettingsModel, error) {
 	filter := bson.M{"by_user": user}
 	cur, err := db.settingsCourses.Find(context.Background(), filter)
 	if err != nil {
 		return nil, err
 	}
 
-	var courses []*models.CourseSettingsModel
+	var courses []*entities.CourseSettingsModel
 	err = cur.All(context.Background(), &courses)
 	if err != nil {
 		return nil, err

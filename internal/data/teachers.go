@@ -1,12 +1,12 @@
 package data
 
 import (
-	"thuanle/cse-mark/internal/models"
+	"thuanle/cse-mark/internal/domain/entities"
 	"thuanle/cse-mark/internal/services/db"
 )
 
 func TeacherStoreCourseLink(course string, link string, byId int64, byUser string) error {
-	model := &models.CourseSettingsModel{
+	model := &entities.CourseSettingsModel{
 		Course: course,
 		Link:   link,
 		ById:   byId,
@@ -23,6 +23,6 @@ func IsTeacher(user string) bool {
 	return u.IsTeacher
 }
 
-func FetchTeacherCourses(user string) ([]*models.CourseSettingsModel, error) {
+func FetchTeacherCourses(user string) ([]*entities.CourseSettingsModel, error) {
 	return db.Instance().GetCoursesByUser(user)
 }
