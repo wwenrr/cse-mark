@@ -11,7 +11,6 @@ import (
 	"sync"
 	"thuanle/cse-mark/internal/configs"
 	"thuanle/cse-mark/internal/domain/mark"
-	"thuanle/cse-mark/internal/domain/user"
 	"time"
 )
 
@@ -38,7 +37,7 @@ func (r *MarkRepo) GetMark(courseId string, studentId string) (string, error) {
 	defer cancel()
 	err := r.db.Collection(courseId).FindOne(ctx, filter).Decode(&result)
 	if err != nil && errors.Is(err, mongo.ErrNoDocuments) {
-		err = user.ErrNotFound
+		err = mark.ErrNotFound
 		return "", err
 	}
 

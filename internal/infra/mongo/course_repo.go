@@ -6,7 +6,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"thuanle/cse-mark/internal/configs"
 	"thuanle/cse-mark/internal/domain/course"
-	"thuanle/cse-mark/internal/domain/user"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -100,7 +99,7 @@ func (r *CourseRepo) FindCourseById(courseId string) (course.Model, error) {
 	defer cancel()
 	err := r.collection.FindOne(ctx, bson.M{"_id": courseId}).Decode(&res)
 	if err != nil && errors.Is(err, mongo.ErrNoDocuments) {
-		err = user.ErrNotFound
+		err = course.ErrNotFound
 	}
 	return res, err
 }
