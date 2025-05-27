@@ -63,14 +63,14 @@ func (r *MarkRepo) RemoveMarksByCourseId(courseId string) error {
 
 func (r *MarkRepo) AddCourseMarks(courseId string, marks []map[string]string) error {
 	var bulkWrites []mongo.WriteModel
-	for _, mark := range marks {
+	for _, aMark := range marks {
 		// Ensure _id is set, if not use id
-		if len(mark["_id"]) == 0 {
-			mark["_id"] = mark["id"]
+		if len(aMark["_id"]) == 0 {
+			aMark["_id"] = aMark["id"]
 		}
 
-		filter := bson.M{"_id": mark["_id"]}
-		update := bson.M{"$set": mark}
+		filter := bson.M{"_id": aMark["_id"]}
+		update := bson.M{"$set": aMark}
 		model := mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true)
 		bulkWrites = append(bulkWrites, model)
 	}

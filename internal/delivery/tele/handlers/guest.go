@@ -33,18 +33,18 @@ func (h *Guest) Start(c telebot.Context) error {
 }
 
 func (h *Guest) GetMark(c telebot.Context) error {
-	course, studentId, err := helpers.Args2StrStr(c)
+	courseId, studentId, err := helpers.Args2StrStr(c)
 	if err != nil {
 		//split c.Text() via " " and get course and studentId
 		args := strings.Split(c.Text(), " ")
 		if len(args) != 2 {
 			return err
 		}
-		course = args[0]
+		courseId = args[0]
 		studentId = args[1]
 	}
 
-	if !h.courseRules.IsValidCourseId(course) {
+	if !h.courseRules.IsValidCourseId(courseId) {
 		return models.NewArgValueMismatchError("course invalid")
 	}
 
