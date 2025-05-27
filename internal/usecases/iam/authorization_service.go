@@ -34,10 +34,10 @@ func (s *AuthzService) CanEditCourse(username string, teleId int64, courseID str
 }
 
 func (s *AuthzService) IsTeacher(username string) (bool, error) {
-	user, err := s.userRepo.FindUserById(username)
+	userModel, err := s.userRepo.FindUserById(username)
 	if err != nil {
 		return false, err
 	}
 
-	return user.IsTeacher, nil
+	return userModel.IsTeacher, nil
 }
