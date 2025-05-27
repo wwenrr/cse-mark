@@ -1,14 +1,22 @@
 package main
 
 import (
-	"thuanle/cse-mark/internal"
-	"thuanle/cse-mark/internal/services/fetcher"
+	"github.com/rs/zerolog/log"
+	"thuanle/cse-mark/internal/infra"
 )
 
 func main() {
-	internal.Load()
+	infra.InitZerolog()
+	_ = infra.InitDotenv()
 
-	fetcher.Execute()
+	log.Info().Msg("Initialization completed successfully")
 
-	defer internal.Unload()
+	app, err := InitializeApp()
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to initialize application")
+		return
+	}
+	app.SyncService.Run()
+
+	defer app.MongoClient.Disconnect()
 }

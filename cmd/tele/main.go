@@ -1,14 +1,31 @@
 package main
 
 import (
-	"thuanle/cse-mark/internal"
-	"thuanle/cse-mark/internal/services/tele"
+	"github.com/rs/zerolog/log"
+	"thuanle/cse-mark/internal/infra"
 )
 
 func main() {
-	internal.Load()
+	//infrastructure.InitZerolog()
+	//
+	//internal.Load()
+	//
+	//tele.Run()
+	//
+	//defer internal.Unload()
 
-	tele.Execute()
+	infra.InitZerolog()
+	_ = infra.InitDotenv()
 
-	defer internal.Unload()
+	log.Info().Msg("Initialization completed successfully")
+
+	app, err := InitializeApp()
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to initialize application")
+		return
+	}
+
+	app.TeleService.Run()
+
+	defer app.MongoClient.Disconnect()
 }
