@@ -8,7 +8,7 @@ COPY . .
 RUN go mod tidy
 
 WORKDIR /app/cmd/fetcher
-RUN go build -o marksync
+RUN go build -o fetcher
 
 # RUN IMAGE
 FROM alpine

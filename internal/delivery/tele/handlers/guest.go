@@ -55,11 +55,11 @@ func (h *Guest) GetMark(c telebot.Context) error {
 	log.Info().
 		Int64("chatId", c.Chat().ID).
 		Str("chatName", c.Chat().Username).
-		Str("course", course).
+		Str("course", courseId).
 		Str("studentId", studentId).
 		Msg("Get mark")
 
-	msg, err := h.markRepo.GetMark(course, studentId)
+	msg, err := h.markRepo.GetMark(courseId, studentId)
 	if err != nil {
 		return err
 	}
