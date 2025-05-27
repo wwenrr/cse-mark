@@ -9,5 +9,5 @@ type Repository interface {
 
 	RemoveMarksByCourseId(courseId string) error
 	AddCourseMarks(courseId string, marks []map[string]string) error
-	// RemoveCourseMarks(courseId string) error
+	RemoveCourseMarks(courseId string) error
 }
